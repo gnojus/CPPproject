@@ -1,0 +1,80 @@
+@startuml
+
+
+skinparam dpi 200
+skinparam classAttributeIconSize 0
+
+
+
+/' Objects '/
+namespace Packer {
+	class Header {
+		-entries : vector<entry>
+		-calculateOffsets() : void
+		+addEntry(string filename, size_t fileSize) : void
+		+removeEntry(string filename) : void
+		+write(ostream& o) : void
+		+read(istream& i) : void
+	}
+
+	class Header::entry {
+		-fileName : string
+		-fileSize : size_t
+		-offset : size_t
+	}
+
+	class Packer {
+		-out : ostream&
+		-header : Header
+		+Packer(ostream& o)
+		+addFile(string filename) : void
+		+create() : void
+	}
+
+	class Unpacker {
+		-in : istream&
+		-header : Header
+		+Unpacker(istream& i)
+		+listFiles() : vector<file>
+		+extractFile(string name, string dir) : void
+		+extractFile(string name, ostream& o) : void
+		+extractFiles(string dir) : void
+	}
+
+	class Unpacker::file {
+		-fileName : string
+		-fileSize : size_t
+	}
+}
+
+
+
+
+/' Inheritance relationships '/
+
+
+
+
+/' Aggregation relationships '/
+
+Packer.Packer *-- Packer.Header
+
+
+Packer.Unpacker *-- Packer.Header
+
+
+
+
+
+
+/' Nested objects '/
+
+Packer.Header +-- Packer.Header::entry
+
+
+Packer.Unpacker +-- Packer.Unpacker::file
+
+
+
+
+@enduml

@@ -1,0 +1,43 @@
+@startuml Archiving activity diagram
+skinparam ConditionEndStyle hline
+skinparam dpi 200
+
+start
+
+note: **Archive files**\n\
+**Input**: content filenames, archive filename
+
+repeat :repeat with each content filename
+    if (file already in archive header) then (yes)
+        :show warning;
+    else (no)
+        :get file size;
+        :add file name and size to archive header;
+    endif
+repeat while (filenames remaining)
+
+:create archive file;
+:write archive header to archive file;
+
+
+repeat :repeat with each header entry
+    :open file;
+    :copy contents to archive file;
+    :close file;
+    if (written byte count equals header entry file size) then (yes)
+        :inform about added file;
+    else (no)
+        :close archive file;
+        :delete archive file;
+        #red:throw exception;
+        detach
+    endif
+repeat while (entries remaining)
+
+:close archive file;
+
+:inform about output file;
+
+stop
+
+@enduml

@@ -1,0 +1,43 @@
+@startuml Packer use case diagram
+skinparam dpi 200
+left to right direction
+actor User
+
+Package "Packer UI" {
+    (Archive Files) as archive
+    ' (Add to archive) as add
+    (Extract file) as extractFile
+    (Extract files) as extract
+
+    (List files) as list
+    ' (Remove files) as remove
+
+    User --> extract
+    User -> extractFile
+    User --> archive
+    User --> list
+
+    extract --> extractFile #line.dashed
+
+    ' User --> add
+    ' archive -> add #line.dashed
+    
+
+    ' User --> remove
+}
+
+package Classes {
+    artifact Packer as pack
+    archive --> pack
+
+    artifact Unpacker as unpack
+
+    artifact Header as header
+    pack --> header #line.dashed
+    unpack --> header #line.dashed
+
+    list --> unpack
+    extractFile --> unpack
+}
+
+@enduml

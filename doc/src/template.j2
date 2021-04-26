@@ -1,0 +1,17 @@
+{% extends 'default.puml' %}
+
+{% block preamble %}
+skinparam dpi 200
+skinparam classAttributeIconSize 0
+{% endblock %}
+
+{% block objects %}
+/' Objects '/
+{% for object in objects %}
+    {%- for line in object.render().split('\n') %}
+        {%- if 'get' not in line %}
+            {{- line }}{{ '\n' -}}
+        {%- endif %}
+    {%- endfor %}
+{%- endfor %}
+{%- endblock %}
