@@ -25,6 +25,6 @@ $(TARGET): $(SRC_OBJ)
 clean:
 	$(RM) $(SRC_OBJ)
 	$(RM) $(TARGET)
-	$(RM) $(DOCS)/*.png
+	# $(RM) $(DOCS)/*.png
 
 .PHONY: all clean doc

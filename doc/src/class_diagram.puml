@@ -8,42 +8,66 @@ skinparam classAttributeIconSize 0
 
 /' Objects '/
 namespace Packer {
-	class Header {
-		-entries : vector<entry>
-		-calculateOffsets() : void
-		+addEntry(string filename, size_t fileSize) : void
-		+removeEntry(string filename) : void
-		+write(ostream& o) : void
-		+read(istream& i) : void
+	abstract class DataSource {
+		+~DataSource()
+		+{abstract} name() : std::string
+		+{abstract} size() : std::size_t
+		+{abstract} write(o : std::ostream&) : void
 	}
 
-	class Header::entry {
+	class File {
 		-fileName : string
 		-fileSize : size_t
+	}
+
+	class FileSource {
+		-filename : std::string
+		-file : std::ifstream
+		+FileSource(_filename : std::string)
+		+close() : void
+		+name() : std::string
+		+size() : std::size_t
+		+write(o : std::ostream&) : void
+	}
+
+	class Header {
+		-entries : vector<Entry>
+		-calculateOffsets() : void
+		+addEntry(filename : string, fileSize : size_t) : void
+		+removeEntry(filename : string) : void
+		+write(o : ostream&) : void
+		+read(i : istream&) : void
+	}
+
+	class Header::Entry {
 		-offset : size_t
 	}
 
 	class Packer {
 		-out : ostream&
 		-header : Header
-		+Packer(ostream& o)
-		+addFile(string filename) : void
+		+Packer(o : ostream&)
+		+addFile(filename : string) : void
 		+create() : void
+	}
+
+	class StdinSource {
+		-filename : std::string
+		-data : std::string
+		+StdinSource(_name : std::string)
+		+name() : std::string
+		+size() : std::size_t
+		+write(o : std::ostream&) : void
 	}
 
 	class Unpacker {
 		-in : istream&
 		-header : Header
-		+Unpacker(istream& i)
-		+listFiles() : vector<file>
-		+extractFile(string name, string dir) : void
-		+extractFile(string name, ostream& o) : void
-		+extractFiles(string dir) : void
-	}
-
-	class Unpacker::file {
-		-fileName : string
-		-fileSize : size_t
+		+Unpacker(i : istream&)
+		+listFiles() : vector<File>
+		+extractFile(name : string, dir : string) : void
+		+extractFile(name : string, o : ostream&) : void
+		+extractFiles(dir : string) : void
 	}
 }
 
@@ -51,6 +75,15 @@ namespace Packer {
 
 
 /' Inheritance relationships '/
+
+Packer.DataSource <|-- Packer.FileSource
+
+
+Packer.DataSource <|-- Packer.StdinSource
+
+
+Packer.File <|-- Packer.Header::Entry
+
 
 
 
@@ -69,10 +102,7 @@ Packer.Unpacker *-- Packer.Header
 
 /' Nested objects '/
 
-Packer.Header +-- Packer.Header::entry
-
-
-Packer.Unpacker +-- Packer.Unpacker::file
+Packer.Header +-- Packer.Header::Entry
 
 
 

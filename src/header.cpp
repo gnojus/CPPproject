@@ -3,15 +3,7 @@
 namespace Packer {
     using namespace std;
 
-    const string &Header::entry::getFilename() const {
-        return fileName;
-    }
-
-    size_t Header::entry::getFileSize() const {
-        return 0;
-    }
-
-    size_t Header::entry::getOffset() const {
+    size_t Header::Entry::getOffset() const {
         return 0;
     }
 
@@ -27,8 +19,8 @@ namespace Packer {
     void Header::read(istream &i) {
     }
 
-    vector<Header::entry> Header::getEntries() const {
-        return vector<entry>{};
+    vector<Header::Entry> Header::getEntries() const {
+        return {};
     }
 
     void Header::calculateOffsets() {

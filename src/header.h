@@ -4,29 +4,28 @@
 #include <string>
 #include <vector>
 
+#include "file.h"
+
 namespace Packer {
     using namespace std;
 
     class Header {
        public:
-        class entry {
+        class Entry : public File {
            public:
-            const string &getFilename() const;
-            size_t getFileSize() const;
             size_t getOffset() const;
 
            private:
-            string fileName;
-            size_t fileSize, offset;
+            size_t offset;
         };
         void addEntry(string filename, size_t fileSize);
         void removeEntry(string filename);
         void write(ostream &o);
         void read(istream &i);
-        vector<entry> getEntries() const;
+        vector<Entry> getEntries() const;
 
        private:
-        vector<entry> entries;
+        vector<Entry> entries;
         void calculateOffsets();
     };
 }

@@ -2,6 +2,7 @@
 #define UNPACKER_H
 
 #include <iostream>
+#include "file.h"
 #include "header.h"
 
 namespace Packer {
@@ -9,18 +10,8 @@ namespace Packer {
 
     class Unpacker {
        public:
-        class file {
-           public:
-            const string &getFilename() const;
-            size_t getFileSize() const;
-
-           private:
-            string fileName;
-            size_t fileSize;
-        };
-
         Unpacker(istream &i);
-        vector<file> listFiles();
+        vector<File> listFiles();
         void extractFile(string name, string dir);
         void extractFile(string name, ostream &o);
         void extractFiles(string dir);

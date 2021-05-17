@@ -6,7 +6,8 @@ namespace Packer {
     Unpacker::Unpacker(istream &i) : in(i) {
     }
 
-    vector<file> Unpacker::listFiles() {
+    vector<File> Unpacker::listFiles() {
+        return {};
     }
 
     void extractFile(string name, string dir) {
@@ -16,13 +17,5 @@ namespace Packer {
     }
 
     void Unpacker::extractFiles(string dir) {
-    }
-
-    const string &Unpacker::file::getFilename() const {
-        return fileName;
-    }
-
-    size_t Unpacker::file::getFileSize() const {
-        return 0;
     }
 }
